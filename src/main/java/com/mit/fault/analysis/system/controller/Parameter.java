@@ -1,11 +1,12 @@
-package controller;
+package com.mit.fault.analysis.system.controller;
 
-import entities.Generator;
+
+import com.mit.fault.analysis.system.entities.Generator;
+import com.mit.fault.analysis.system.services.GeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import services.GeneratorService;
 
 @RestController
 public class Parameter {

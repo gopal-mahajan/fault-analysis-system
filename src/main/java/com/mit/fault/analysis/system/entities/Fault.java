@@ -1,4 +1,4 @@
-package entities;
+package com.mit.fault.analysis.system.entities;
 
 
 public class Fault {

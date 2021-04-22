@@ -1,9 +1,9 @@
-package services;
+package com.mit.fault.analysis.system.services;
 
 
-import entities.Generator;
+import com.mit.fault.analysis.system.entities.Generator;
+import com.mit.fault.analysis.system.repositories.GeneratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import repositories.GeneratorRepository;
 
 public class GeneratorService {
 

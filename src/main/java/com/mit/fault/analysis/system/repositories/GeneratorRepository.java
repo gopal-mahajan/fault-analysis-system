@@ -1,6 +1,5 @@
-package repositories;
-
-import entities.Generator;
+package com.mit.fault.analysis.system.repositories;
+import com.mit.fault.analysis.system.entities.Generator;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
