@@ -11,15 +11,15 @@ public class FaultService {
 
         double faultCurrent = 0;
         switch (faultType) {
-            case "LineToGround":
+            case "LINE_TO_GROUND":
                 faultCurrent = lineToGround(generator.getEmf(), generator.getZeroSequenceImpedance(),
                         generator.getPositiveSequenceImpedance(), generator.getNegativeSequenceImpedance(), faultImpedance);
                 break;
-            case "LineToLine":
+            case "LINE_TO_LINE":
                 faultCurrent = lineToLine(generator.getEmf(),
                         generator.getPositiveSequenceImpedance(), generator.getNegativeSequenceImpedance(), faultImpedance);
                 break;
-            case "LineToLineToGround":
+            case "LINE_TO_LINE_GROUND":
                 faultCurrent = lineToLineToGround(generator.getEmf(),
                         generator.getPositiveSequenceImpedance(), generator.getNegativeSequenceImpedance(),
                         generator.getZeroSequenceImpedance(), faultImpedance);
