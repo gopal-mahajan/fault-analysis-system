@@ -2,11 +2,10 @@ package com.mit.fault.analysis.system.controller;
 
 
 import com.mit.fault.analysis.system.DTO.FaultType;
-import com.mit.fault.analysis.system.entities.Generator;
-import com.mit.fault.analysis.system.entities.Motor;
+import com.mit.fault.analysis.system.DTO.PowerSystem;
+import com.mit.fault.analysis.system.entities.PowerSystemDevice;
 import com.mit.fault.analysis.system.repositories.FaultService;
-import com.mit.fault.analysis.system.services.GeneratorService;
-import com.mit.fault.analysis.system.services.MotorService;
+import com.mit.fault.analysis.system.services.PowerSystemDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,40 +15,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Parameter {
     @Autowired
-    GeneratorService generatorService;
+    PowerSystemDeviceService powerSystemDeviceService;
     @Autowired
     FaultService faultService;
-    @Autowired
-    MotorService motorService;
 
-    @PostMapping("/addGenerator")
-    String addGenerator(@RequestParam("generatorName") String generatorName, @RequestParam("emf") float emf,
-                        @RequestParam("zeroSequenceImpedance") float zeroSequenceImpedance,
-                        @RequestParam("positiveSequenceImpedance") float positiveSequenceImpedance,
-                        @RequestParam("negativeSequenceImpedance") float negativeSequenceImpedance
-            , @RequestParam("/phaseAngle") float phaseAngle) {
-        Generator generator = new Generator(emf, zeroSequenceImpedance, positiveSequenceImpedance, negativeSequenceImpedance, phaseAngle);
-        return generatorService.addGenerator(generatorName, generator);
-    }
 
-    @PostMapping("/addMotor")
-    String addMotor(@RequestParam("motorName") String motorName, @RequestParam("emf") float emf,
-                    @RequestParam("zeroSequenceImpedance") float zeroSequenceImpedance,
-                    @RequestParam("positiveSequenceImpedance") float positiveSequenceImpedance,
-                    @RequestParam("negativeSequenceImpedance") float negativeSequenceImpedance
-            , @RequestParam("/phaseAngle") float phaseAngle) {
-        Motor motor = new Motor(emf, zeroSequenceImpedance, positiveSequenceImpedance, negativeSequenceImpedance, phaseAngle);
-        return motorService.addMotor(motorName, motor);
+    @PostMapping("/addPowerSystem")
+    String addPowerSystemDevice(@RequestParam("powerSystemName") String powerSystemName, @RequestParam("kvRating") float kvRating,
+                              @RequestParam("mvaRating") float mvaRating, @RequestParam("zeroSequenceImpedance") float zeroSequenceImpedance,
+                              @RequestParam("positiveSequenceImpedance") float positiveSequenceImpedance,
+                              @RequestParam("negativeSequenceImpedance") float negativeSequenceImpedance,
+                              @RequestParam("powerSystemType") PowerSystem powerSystem, @RequestParam("/phaseAngle") float phaseAngle
+            , @RequestParam("isBASE") boolean isBase) {
+
+
+
+        PowerSystemDevice PowerSystemDevice = new PowerSystemDevice(mvaRating, kvRating, zeroSequenceImpedance, positiveSequenceImpedance,
+                negativeSequenceImpedance, phaseAngle, isBase, powerSystem);
+        return powerSystemDeviceService.addPowerSystemDevice(powerSystemName, PowerSystemDevice);
+
     }
 
 
     @GetMapping("/getFaultParameter")
-    String faultDetails(@RequestParam("generatorName") String generatorName, @RequestParam("motorName") String motorName,
+    String faultDetails(@RequestParam("PowerSystemDeviceName") String PowerSystemDeviceName, @RequestParam("motorName") String motorName,
                         @RequestParam("/faultImpedance") float faultImpedance,
                         @RequestParam("typeOfFault") FaultType faultType) {
-        Generator generator = generatorService.getGenerator(generatorName);
-        Motor motor = motorService.getMotor(motorName);
-        return "Fault Current for the given data is " + faultService.faultParameter(faultType.toString(), faultImpedance, generator);
+        PowerSystemDevice powerSystem = powerSystemDeviceService.getPowerSystemDevice(PowerSystemDeviceName);
+
+        return "Fault Current for the given data is " + faultService.faultParameter(faultType.toString(), faultImpedance, powerSystem);
 
     }
 

@@ -1,28 +1,28 @@
 package com.mit.fault.analysis.system.repositories;
 
-import com.mit.fault.analysis.system.entities.Generator;
+import com.mit.fault.analysis.system.entities.PowerSystemDevice;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FaultService {
 
-    public double faultParameter(String faultType, float faultImpedance, Generator generator) {
+    public double faultParameter(String faultType, float faultImpedance, PowerSystemDevice powerSystem) {
 //        LineToGround,LineToLine,LineToLineToGround
 
         double faultCurrent = 0;
         switch (faultType) {
             case "LINE_TO_GROUND":
-                faultCurrent = lineToGround(generator.getEmf(), generator.getZeroSequenceImpedance(),
-                        generator.getPositiveSequenceImpedance(), generator.getNegativeSequenceImpedance(), faultImpedance);
+                faultCurrent = lineToGround(powerSystem.getKvRating(), powerSystem.getZeroSequenceImpedance(),
+                        powerSystem.getPositiveSequenceImpedance(), powerSystem.getNegativeSequenceImpedance(), faultImpedance);
                 break;
             case "LINE_TO_LINE":
-                faultCurrent = lineToLine(generator.getEmf(),
-                        generator.getPositiveSequenceImpedance(), generator.getNegativeSequenceImpedance(), faultImpedance);
+                faultCurrent = lineToLine(powerSystem.getKvRating(),
+                        powerSystem.getPositiveSequenceImpedance(), powerSystem.getNegativeSequenceImpedance(), faultImpedance);
                 break;
             case "LINE_TO_LINE_GROUND":
-                faultCurrent = lineToLineToGround(generator.getEmf(),
-                        generator.getPositiveSequenceImpedance(), generator.getNegativeSequenceImpedance(),
-                        generator.getZeroSequenceImpedance(), faultImpedance);
+                faultCurrent = lineToLineToGround(powerSystem.getKvRating(),
+                        powerSystem.getPositiveSequenceImpedance(), powerSystem.getNegativeSequenceImpedance(),
+                        powerSystem.getZeroSequenceImpedance(), faultImpedance);
                 break;
         }
 
