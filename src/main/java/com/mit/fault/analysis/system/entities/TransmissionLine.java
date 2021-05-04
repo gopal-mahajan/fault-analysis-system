@@ -9,11 +9,9 @@ public class TransmissionLine {
 
 
     public TransmissionLine(float zeroSequenceImpedance, float positiveSequenceImpedance, float negativeSequenceImpedance) {
-
         this.zeroSequenceImpedance = zeroSequenceImpedance;
         this.positiveSequenceImpedance = positiveSequenceImpedance;
         this.negativeSequenceImpedance = negativeSequenceImpedance;
-
     }
 
 

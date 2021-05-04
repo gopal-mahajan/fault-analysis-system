@@ -7,15 +7,15 @@ public class Transformer {
     float zeroSequenceImpedance;
     float positiveSequenceImpedance;
     float negativeSequenceImpedance;
-
     ConnectionType connectionType;
 
-    public Transformer(float emf, float zeroSequenceImpedance, float positiveSequenceImpedance, float negativeSequenceImpedance, ConnectionType connectionType) {
+    public Transformer(float emf, float zeroSequenceImpedance, float positiveSequenceImpedance,
+                       float negativeSequenceImpedance, ConnectionType connectionType) {
         this.emf = emf;
         this.zeroSequenceImpedance = zeroSequenceImpedance;
         this.positiveSequenceImpedance = positiveSequenceImpedance;
         this.negativeSequenceImpedance = negativeSequenceImpedance;
-        this.connectionType=connectionType;
+        this.connectionType = connectionType;
     }
 
     public float getEmf() {

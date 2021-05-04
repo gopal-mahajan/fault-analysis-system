@@ -14,7 +14,6 @@ public class PowerSystemDeviceService {
 
     public String addPowerSystemDevice(String name, PowerSystemDevice powerSystem) {
         return powerSystemDeviceRepository.addPowerSystemDevice(name, powerSystem);
-
     }
 
     public PowerSystemDevice getPowerSystemDevice(String name) {
@@ -22,9 +21,8 @@ public class PowerSystemDeviceService {
     }
 
 
-
-    public void checkBase(){
-        powerSystemDeviceRepository.checkBase();
+    public String checkBase() {
+        return powerSystemDeviceRepository.checkBase();
     }
 
 }

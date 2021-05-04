@@ -6,23 +6,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class FaultService {
 
-    public double faultParameter(String faultType, float faultImpedance, PowerSystemDevice powerSystem) {
+    public double faultParameter(String faultType, float faultImpedance, PowerSystemDevice generator, PowerSystemDevice motor) {
 //        LineToGround,LineToLine,LineToLineToGround
+        float equivalentPositiveSequenceImpedance = getEquivalent(generator.getPositiveSequenceImpedance(),
+                motor.getPositiveSequenceImpedance());
+
+        float equivalentNegativeSequenceImpedance = getEquivalent(generator.getNegativeSequenceImpedance(),
+                motor.getNegativeSequenceImpedance());
+
+        float equivalentZeroSequenceImpedance = getEquivalent(generator.getZeroSequenceImpedance(),
+                motor.getZeroSequenceImpedance());
+
 
         double faultCurrent = 0;
         switch (faultType) {
             case "LINE_TO_GROUND":
-                faultCurrent = lineToGround(powerSystem.getKvRating(), powerSystem.getZeroSequenceImpedance(),
-                        powerSystem.getPositiveSequenceImpedance(), powerSystem.getNegativeSequenceImpedance(), faultImpedance);
+                faultCurrent = lineToGround(1, equivalentZeroSequenceImpedance,
+                        equivalentPositiveSequenceImpedance, equivalentNegativeSequenceImpedance, faultImpedance);
                 break;
             case "LINE_TO_LINE":
-                faultCurrent = lineToLine(powerSystem.getKvRating(),
-                        powerSystem.getPositiveSequenceImpedance(), powerSystem.getNegativeSequenceImpedance(), faultImpedance);
+                faultCurrent = lineToLine(1, equivalentPositiveSequenceImpedance,
+                        equivalentNegativeSequenceImpedance, faultImpedance);
                 break;
             case "LINE_TO_LINE_GROUND":
-                faultCurrent = lineToLineToGround(powerSystem.getKvRating(),
-                        powerSystem.getPositiveSequenceImpedance(), powerSystem.getNegativeSequenceImpedance(),
-                        powerSystem.getZeroSequenceImpedance(), faultImpedance);
+                faultCurrent = lineToLineToGround(1, equivalentPositiveSequenceImpedance, equivalentNegativeSequenceImpedance,
+                        equivalentZeroSequenceImpedance, faultImpedance);
                 break;
         }
 
@@ -33,7 +41,7 @@ public class FaultService {
     public float lineToGround(float emf, float zeroSequenceImpedance, float positiveSequenceImpedance
             , float negativeSequenceImpedance, float faultImpedance) {
         float faultCurrent = 0;
-        emf = (float) (emf / Math.sqrt(3));
+//        emf = (float) (emf / Math.sqrt(3));
         float equivalentImpedance = zeroSequenceImpedance + positiveSequenceImpedance + negativeSequenceImpedance + (3 * faultImpedance);
         faultCurrent = 3 * (emf / equivalentImpedance);
 
@@ -42,7 +50,7 @@ public class FaultService {
 
     public double lineToLine(float emf, float positiveSequenceImpedance, float negativeSequenceImpedance, float faultImpedance) {
         double faultCurrent = 0;
-        emf = (float) (emf / Math.sqrt(3));
+//        emf = (float) (emf / Math.sqrt(3));
         float equivalentImpedance = positiveSequenceImpedance + negativeSequenceImpedance + faultImpedance;
         faultCurrent = Math.sqrt(3) * (emf / equivalentImpedance);
 
@@ -53,7 +61,7 @@ public class FaultService {
     public double lineToLineToGround(float emf, float positiveSequenceImpedance
             , float negativeSequenceImpedance, float zeroSequenceImpedance, float faultImpedance) {
         double faultCurrent = 0;
-        emf = (float) (emf / Math.sqrt(3));
+//        emf = (float) (emf / Math.sqrt(3));
         float imp0 = ((zeroSequenceImpedance + (3 * faultImpedance)));
         float imp = (negativeSequenceImpedance * imp0);
 
@@ -69,5 +77,8 @@ public class FaultService {
         return faultCurrent;
     }
 
+    float getEquivalent(float sequenceOf1, float sequenceOf2) {
+        return sequenceOf1 + sequenceOf2;
+    }
 
 }

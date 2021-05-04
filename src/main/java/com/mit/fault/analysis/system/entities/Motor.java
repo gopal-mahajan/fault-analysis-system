@@ -9,9 +9,10 @@ public class Motor {
     float positiveSequenceImpedance;
     float negativeSequenceImpedance;
     float phaseAngle = 0;
-    boolean isBase=false;
+    boolean isBase;
+
     public Motor(float kvRating, float mvaRating, float zeroSequenceImpedance, float positiveSequenceImpedance, float negativeSequenceImpedance, float phaseAngle, boolean isbase) {
-        this.isBase=isbase;
+        this.isBase = isbase;
         this.kvRating = kvRating;
         this.mvaRating = mvaRating;
         this.zeroSequenceImpedance = zeroSequenceImpedance;
