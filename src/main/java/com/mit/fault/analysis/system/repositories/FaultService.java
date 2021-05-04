@@ -10,13 +10,10 @@ public class FaultService {
 //        LineToGround,LineToLine,LineToLineToGround
         float equivalentPositiveSequenceImpedance = getEquivalent(generator.getPositiveSequenceImpedance(),
                 motor.getPositiveSequenceImpedance());
-
         float equivalentNegativeSequenceImpedance = getEquivalent(generator.getNegativeSequenceImpedance(),
                 motor.getNegativeSequenceImpedance());
-
         float equivalentZeroSequenceImpedance = getEquivalent(generator.getZeroSequenceImpedance(),
                 motor.getZeroSequenceImpedance());
-
 
         double faultCurrent = 0;
         switch (faultType) {
@@ -53,7 +50,6 @@ public class FaultService {
 //        emf = (float) (emf / Math.sqrt(3));
         float equivalentImpedance = positiveSequenceImpedance + negativeSequenceImpedance + faultImpedance;
         faultCurrent = Math.sqrt(3) * (emf / equivalentImpedance);
-
         return faultCurrent;
     }
 
@@ -64,15 +60,10 @@ public class FaultService {
 //        emf = (float) (emf / Math.sqrt(3));
         float imp0 = ((zeroSequenceImpedance + (3 * faultImpedance)));
         float imp = (negativeSequenceImpedance * imp0);
-
         float imp1 = negativeSequenceImpedance + zeroSequenceImpedance + (3 * faultImpedance);
-
         float equivalentImpedance = positiveSequenceImpedance + (imp / imp1);
-
         float positiveCurrent = emf / equivalentImpedance;
-
         equivalentImpedance = negativeSequenceImpedance / imp1;
-
         faultCurrent = 3 * (positiveCurrent * equivalentImpedance);
         return faultCurrent;
     }

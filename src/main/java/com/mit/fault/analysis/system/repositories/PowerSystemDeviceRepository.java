@@ -74,7 +74,7 @@ public class PowerSystemDeviceRepository {
     }
 
     public void changeBase(PowerSystemDevice powerSystemDevice) {
-        float temp = (float) Math.sqrt(powerSystemDevice.getKvRating() / baseKv) * (baseMVA / powerSystemDevice.getMvaRating());
+        float temp = (float) Math.pow((powerSystemDevice.getKvRating() / baseKv), 2) * (baseMVA / powerSystemDevice.getMvaRating());
         powerSystemDevice.setPositiveSequenceImpedance(powerSystemDevice.getPositiveSequenceImpedance() * temp);
         powerSystemDevice.setNegativeSequenceImpedance(powerSystemDevice.getNegativeSequenceImpedance() * temp);
         powerSystemDevice.setZeroSequenceImpedance(powerSystemDevice.getZeroSequenceImpedance() * temp);
