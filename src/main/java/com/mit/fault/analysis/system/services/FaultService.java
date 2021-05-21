@@ -1,4 +1,4 @@
-package com.mit.fault.analysis.system.repositories;
+package com.mit.fault.analysis.system.services;
 
 import com.mit.fault.analysis.system.entities.PowerSystemDevice;
 import org.springframework.stereotype.Service;

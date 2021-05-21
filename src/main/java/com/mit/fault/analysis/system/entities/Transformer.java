@@ -1,40 +1,24 @@
 package com.mit.fault.analysis.system.entities;
 
 import com.mit.fault.analysis.system.DTO.ConnectionType;
+import com.mit.fault.analysis.system.DTO.PowerSystemType;
+import lombok.Data;
 
-public class Transformer {
-    float emf;
-    float zeroSequenceImpedance;
-    float positiveSequenceImpedance;
-    float negativeSequenceImpedance;
+@Data
+public class Transformer extends PowerSystemDevice{
+    float secondaryKVRating;
+    float newSecondaryKVRating;
     ConnectionType connectionType;
 
-    public Transformer(float emf, float zeroSequenceImpedance, float positiveSequenceImpedance,
-                       float negativeSequenceImpedance, ConnectionType connectionType) {
-        this.emf = emf;
-        this.zeroSequenceImpedance = zeroSequenceImpedance;
-        this.positiveSequenceImpedance = positiveSequenceImpedance;
-        this.negativeSequenceImpedance = negativeSequenceImpedance;
+
+    public Transformer(float mvaRating, float primaryKVRating,float secondaryKVRating, float zeroSequenceImpedance,
+                       float positiveSequenceImpedance, float negativeSequenceImpedance,float phaseAngle,
+                       boolean isBase, PowerSystemType powerSystemType, ConnectionType connectionType) {
+
+        super(mvaRating,primaryKVRating, zeroSequenceImpedance, positiveSequenceImpedance,
+                negativeSequenceImpedance, phaseAngle, isBase, powerSystemType);
+        this.secondaryKVRating = secondaryKVRating;
         this.connectionType = connectionType;
-    }
-
-    public float getEmf() {
-        return emf;
-    }
-
-    public float getZeroSequenceImpedance() {
-        return zeroSequenceImpedance;
-    }
-
-    public float getPositiveSequenceImpedance() {
-        return positiveSequenceImpedance;
-    }
-
-    public float getNegativeSequenceImpedance() {
-        return negativeSequenceImpedance;
-    }
-
-    public String connectionType() {
-        return connectionType.toString();
+        this.newSecondaryKVRating=secondaryKVRating;
     }
 }
