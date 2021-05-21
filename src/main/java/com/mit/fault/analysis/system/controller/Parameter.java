@@ -2,6 +2,8 @@ package com.mit.fault.analysis.system.controller;
 
 
 import com.mit.fault.analysis.system.DTO.ConnectionType;
+import com.mit.fault.analysis.system.DTO.FaultType;
+import com.mit.fault.analysis.system.DTO.PositionOfFault;
 import com.mit.fault.analysis.system.DTO.PowerSystemType;
 import com.mit.fault.analysis.system.entities.PowerSystemDevice;
 import com.mit.fault.analysis.system.entities.Transformer;
@@ -27,11 +29,11 @@ public class Parameter {
                                 @RequestParam("zeroSequenceImpedanceInPerUnit") float zeroSequenceImpedance,
                                 @RequestParam("positiveSequenceImpedanceInPerUnit") float positiveSequenceImpedance,
                                 @RequestParam("negativeSequenceImpedanceInPerUnit") float negativeSequenceImpedance,
-                                @RequestParam("powerSystemType") PowerSystemType powerSystemType,
+                                @RequestParam(value = "powerSystemType") PowerSystemType powerSystemType,
                                 @RequestParam("phaseAngle") float phaseAngle, @RequestParam("isBASE") boolean isBase) {
 
         PowerSystemDevice powerSystemDevice = new PowerSystemDevice(mvaRating, kvRating, zeroSequenceImpedance, positiveSequenceImpedance,
-                    negativeSequenceImpedance, phaseAngle, isBase, powerSystemType);
+                negativeSequenceImpedance, phaseAngle, isBase, powerSystemType);
 
         return powerSystemDeviceService.addPowerSystemDevice(powerSystemName, powerSystemDevice);
 
@@ -44,11 +46,11 @@ public class Parameter {
                           @RequestParam("zeroSequenceImpedanceInPerUnit") float zeroSequenceImpedance,
                           @RequestParam("positiveSequenceImpedanceInPerUnit") float positiveSequenceImpedance,
                           @RequestParam("negativeSequenceImpedanceInPerUnit") float negativeSequenceImpedance,
-                          @RequestParam("phaseAngle") float phaseAngle, @RequestParam("powerSystemType") PowerSystemType powerSystemType,
+                          @RequestParam("phaseAngle") float phaseAngle,
                           @RequestParam(value = "connectionType", defaultValue = "null") ConnectionType connectionType) {
 
         Transformer transformer = new Transformer(mvaRating, PrimaryKVRating, SecondaryKVRating, zeroSequenceImpedance
-                , positiveSequenceImpedance, negativeSequenceImpedance, phaseAngle, false,powerSystemType, connectionType);
+                , positiveSequenceImpedance, negativeSequenceImpedance, phaseAngle, false, PowerSystemType.TRANSFORMER, connectionType);
         return powerSystemDeviceService.addTransformer(transformerName, transformer);
     }
 
@@ -60,19 +62,14 @@ public class Parameter {
     }
 
 
-//    @GetMapping("/getFaultParameter")
-//    String faultDetails(@RequestParam("generatorName") String generatorName, @RequestParam("motorName") String motorName,
-//                        @RequestParam("faultImpedance") float faultImpedance,
-//                        @RequestParam("typeOfFault") FaultType faultType) {
-//        PowerSystemDevice generator = powerSystemDeviceService.getPowerSystemDevice(generatorName);
-//        PowerSystemDevice motor = powerSystemDeviceService.getPowerSystemDevice(motorName);
-//
-//        return "Fault Current for the given data is " + faultService.faultParameter(faultType.toString(), faultImpedance, generator, motor) + " per unit.";
-//
-//    }
+    @GetMapping("/getFaultParameter")
+    String getFaultParameters(@RequestParam("typeOfFault") FaultType faultType, @RequestParam("positionOfFault") PositionOfFault positionOfFault,
+                              @RequestParam("faultImpedence") float faultImpedance)
+    {return "Fault Current for the given data is " + faultService.getFaultParameters(positionOfFault, faultType, faultImpedance) + " per unit.";
+    }
 
     @GetMapping("getDevice")
-    public PowerSystemDevice getPower(String name){
+    public PowerSystemDevice getPower(String name) {
         return powerSystemDeviceService.getPowerSystemDevice(name);
     }
 
