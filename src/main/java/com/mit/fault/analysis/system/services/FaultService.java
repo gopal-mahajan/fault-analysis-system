@@ -143,7 +143,7 @@ public class FaultService {
         float tempSum = 0;
         if (PositionOfFault.GENERATOR.equals(positionOfFault) || PositionOfFault.MOTOR.equals(positionOfFault)) {
             for (Map.Entry<String, PowerSystemDevice> powerSystemDeviceEntry : powerSystemDeviceMap.entrySet()) {
-                tempSum = +powerSystemDeviceEntry.getValue().getNegativeSequenceImpedance();
+                tempSum += powerSystemDeviceEntry.getValue().getNegativeSequenceImpedance();
             }
             for (Map.Entry<String, Transformer> transformerEntry : transformerMap.entrySet()) {
                 tempSum += transformerEntry.getValue().getNegativeSequenceImpedance();
