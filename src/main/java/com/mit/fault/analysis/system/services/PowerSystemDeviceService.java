@@ -14,7 +14,7 @@ import java.util.Map;
 public class PowerSystemDeviceService {
 
     @Autowired
-    PowerSystemDeviceRepository powerSystemDeviceRepository;
+    private PowerSystemDeviceRepository powerSystemDeviceRepository;
 
     private float baseKv = 0;
     private float baseMVA = 0;
@@ -41,10 +41,12 @@ public class PowerSystemDeviceService {
 
     public void checkBase() {
         changeKVRating();
-        for (Map.Entry<String, PowerSystemDevice> powerSystemDeviceEntry : powerSystemDeviceRepository.getPowerSystemDeviceMap().entrySet()) {
+        for (Map.Entry<String, PowerSystemDevice> powerSystemDeviceEntry :
+                powerSystemDeviceRepository.getPowerSystemDeviceMap().entrySet()) {
             changeBase(powerSystemDeviceEntry.getValue());
         }
-        for (Map.Entry<String, Transformer> transformerEntry : powerSystemDeviceRepository.getTransformerMap().entrySet()) {
+        for (Map.Entry<String, Transformer> transformerEntry :
+                powerSystemDeviceRepository.getTransformerMap().entrySet()) {
             changeBase(transformerEntry.getValue());
         }
         return;
@@ -62,11 +64,13 @@ public class PowerSystemDeviceService {
             powerSystemDeviceRepository.editPowerSystemMap("TL", powerSystemDevice);
 
             transformer = powerSystemDeviceRepository.getTransformerMap().get("T2");
-            transformer.setNewSecondaryKVRating((powerSystemDevice.getKvRating() * transformer.getSecondaryKVRating()) / transformer.getKvRating());
+            transformer.setNewSecondaryKVRating((powerSystemDevice.getKvRating() * transformer.getSecondaryKVRating())
+                    / transformer.getKvRating());
             transformer.setNewKVRating(powerSystemDevice.getKvRating());
             powerSystemDeviceRepository.editTransformerMap("T2", transformer);
 
-            powerSystemDeviceRepository.getPowerSystemDevice("M1").setNewKVRating(transformer.getSecondaryKVRating());
+            powerSystemDeviceRepository.getPowerSystemDevice("M1").setNewKVRating
+                    (transformer.getSecondaryKVRating());
 
         } else {
             Transformer transformer = powerSystemDeviceRepository.getTransformerMap().get("T2");
@@ -79,19 +83,39 @@ public class PowerSystemDeviceService {
             powerSystemDeviceRepository.editPowerSystemMap("TL", powerSystemDevice);
 
             transformer = powerSystemDeviceRepository.getTransformerMap().get("T1");
-            transformer.setNewKVRating((powerSystemDevice.getKvRating() * transformer.getKvRating()) / transformer.getSecondaryKVRating());
+            transformer.setNewKVRating((powerSystemDevice.getKvRating() * transformer.getKvRating())
+                    / transformer.getSecondaryKVRating());
             transformer.setNewSecondaryKVRating(powerSystemDevice.getKvRating());
             powerSystemDeviceRepository.editTransformerMap("T1", transformer);
-            powerSystemDeviceRepository.getPowerSystemDevice("G1").setNewKVRating(transformer.getSecondaryKVRating());
+
+            powerSystemDeviceRepository.getPowerSystemDevice("G1")
+                    .setNewKVRating(transformer.getNewKVRating());
         }
     }
 
 
+    public float getBaseKv(){
+        return baseKv;
+    }
+
+    public float getBaseMVA(){
+        return  baseMVA;
+    }
+
     public void changeBase(PowerSystemDevice powerSystemDevice) {
-        float temp = (float) Math.pow((powerSystemDevice.getKvRating() / powerSystemDevice.getNewKVRating()), 2) * (baseMVA / powerSystemDevice.getMvaRating());
+        float temp = (float) Math.pow((powerSystemDevice.getKvRating() / powerSystemDevice.getNewKVRating()), 2)
+                * (baseMVA / powerSystemDevice.getMvaRating());
         powerSystemDevice.setPositiveSequenceImpedance(powerSystemDevice.getPositiveSequenceImpedance() * temp);
         powerSystemDevice.setNegativeSequenceImpedance(powerSystemDevice.getNegativeSequenceImpedance() * temp);
         powerSystemDevice.setZeroSequenceImpedance(powerSystemDevice.getZeroSequenceImpedance() * temp);
+    }
+
+    public Map<String, Transformer> getTransformerMap() {
+        return powerSystemDeviceRepository.getTransformerMap();
+    }
+
+    public Map<String, PowerSystemDevice> getPowerSystemDeviceMap() {
+        return powerSystemDeviceRepository.getPowerSystemDeviceMap();
     }
 
 

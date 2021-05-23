@@ -5,7 +5,6 @@ import com.mit.fault.analysis.system.DTO.FaultType;
 import com.mit.fault.analysis.system.DTO.PositionOfFault;
 import com.mit.fault.analysis.system.entities.PowerSystemDevice;
 import com.mit.fault.analysis.system.entities.Transformer;
-import com.mit.fault.analysis.system.repositories.FaultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,152 +12,190 @@ import java.util.Map;
 
 @Service
 public class FaultService {
+
     @Autowired
-    FaultRepository faultRepository;
-
-    private final Map<String, PowerSystemDevice> powerSystemDeviceMap = faultRepository.getPowerSystemDeviceMap();
-    private final Map<String, Transformer> transformerMap = faultRepository.getTransformerMap();
-
+    PowerSystemDeviceService powerSystemDeviceService;
 
     public double getFaultParameters(PositionOfFault positionOfFault, FaultType faultType, float faultImpedance) {
-
-        float equivalentPositiveSequenceImpedance = getPositiveEquivalent(positionOfFault);
-        float equivalentNegativeSequenceImpedance = getNegativeEquivalent(positionOfFault);
-        float equivalentZeroSequenceImpedance = getZeroEquivalent(positionOfFault);
-
-        double faultCurrent = 0;
-        switch (faultType.toString()) {
-            case "LINE_TO_GROUND":
-                faultCurrent = lineToGround(1, equivalentZeroSequenceImpedance,
-                        equivalentPositiveSequenceImpedance, equivalentNegativeSequenceImpedance, faultImpedance);
-                break;
-            case  "LINE_TO_LINE":
-                faultCurrent = lineToLine(1, equivalentPositiveSequenceImpedance,
-                        equivalentNegativeSequenceImpedance, faultImpedance);
-                break;
-            case "LINE_TO_LINE_GROUND":
-                faultCurrent = lineToLineToGround(1, equivalentPositiveSequenceImpedance, equivalentNegativeSequenceImpedance,
-                        equivalentZeroSequenceImpedance, faultImpedance);
-                break;
+        switch (faultType) {
+            case LINE_TO_GROUND:
+                return lineToGround(1, getZeroEquivalent(positionOfFault),
+                        getPositiveEquivalent(positionOfFault), getNegativeEquivalent(positionOfFault), faultImpedance);
+            case LINE_TO_LINE:
+                return lineToLine(1, getPositiveEquivalent(positionOfFault),
+                        getNegativeEquivalent(positionOfFault), faultImpedance);
+            case LINE_TO_LINE_GROUND:
+                return lineToLineToGround(1, getPositiveEquivalent(positionOfFault),
+                        getNegativeEquivalent(positionOfFault), getZeroEquivalent(positionOfFault), faultImpedance);
         }
-        return faultCurrent;
+        return 0;
     }
-     public float lineToGround(float emf, float zeroSequenceImpedance, float positiveSequenceImpedance
+
+    public double getFinalCurrent(double faultCurrent){
+        return  (faultCurrent*((powerSystemDeviceService.getBaseMVA()/(Math.sqrt(3)*powerSystemDeviceService.getBaseKv()))));
+    }
+
+    public float lineToGround(float emf, float zeroSequenceImpedance, float positiveSequenceImpedance
             , float negativeSequenceImpedance, float faultImpedance) {
-        float faultCurrent = 0;
-//        emf = (float) (emf / Math.sqrt(3));
-        float equivalentImpedance = zeroSequenceImpedance + positiveSequenceImpedance + negativeSequenceImpedance + (3 * faultImpedance);
-        faultCurrent = 3 * (emf / equivalentImpedance);
 
-        return faultCurrent;
+        float equivalentImpedance = zeroSequenceImpedance + positiveSequenceImpedance + negativeSequenceImpedance +
+                (3 * faultImpedance);
+        return 3 * (emf / equivalentImpedance);
     }
 
-    public double lineToLine(float emf, float positiveSequenceImpedance, float negativeSequenceImpedance, float faultImpedance) {
-        double faultCurrent = 0;
-//        emf = (float) (emf / Math.sqrt(3));
+    public double lineToLine(float emf, float positiveSequenceImpedance, float negativeSequenceImpedance,
+                             float faultImpedance) {
+
         float equivalentImpedance = positiveSequenceImpedance + negativeSequenceImpedance + faultImpedance;
-        faultCurrent = Math.sqrt(3) * (emf / equivalentImpedance);
-        return faultCurrent;
+        return Math.sqrt(3) * (emf / equivalentImpedance);
     }
 
 
     public double lineToLineToGround(float emf, float positiveSequenceImpedance
             , float negativeSequenceImpedance, float zeroSequenceImpedance, float faultImpedance) {
-        double faultCurrent = 0;
-//        emf = (float) (emf / Math.sqrt(3));
-        float imp0 = ((zeroSequenceImpedance + (3 * faultImpedance)));
-        float imp = (negativeSequenceImpedance * imp0);
+
+        float imp = (negativeSequenceImpedance * ((zeroSequenceImpedance + (3 * faultImpedance))));
         float imp1 = negativeSequenceImpedance + zeroSequenceImpedance + (3 * faultImpedance);
-        float equivalentImpedance = positiveSequenceImpedance + (imp / imp1);
-        float positiveCurrent = emf / equivalentImpedance;
-        equivalentImpedance = negativeSequenceImpedance / imp1;
-        faultCurrent = 3 * (positiveCurrent * equivalentImpedance);
-        return faultCurrent;
+        return 3 * ((emf / (positiveSequenceImpedance + (imp / imp1))) * (negativeSequenceImpedance / imp1));
     }
 
+    private Map<String, Transformer> getTransformerMap() {
+        return powerSystemDeviceService.getTransformerMap();
+    }
+
+    private Map<String, PowerSystemDevice> getPowerSystemDeviceMap() {
+        return powerSystemDeviceService.getPowerSystemDeviceMap();
+    }
 
     private float getZeroEquivalent(PositionOfFault positionOfFault) {
+        Map<String, Transformer> transformerMap = getTransformerMap();
+        Map<String, PowerSystemDevice> powerSystemDeviceMap = getPowerSystemDeviceMap();
         ConnectionType connectionTypeOfT1 = transformerMap.get("T1").getConnectionType();
         ConnectionType connectionTypeOfT2 = transformerMap.get("T2").getConnectionType();
-
-        if (ConnectionType.STAR_DELTA.equals(connectionTypeOfT1) && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)) {
-            return powerSystemDeviceMap.get("G1").getZeroSequenceImpedance() + transformerMap.get("T1").getZeroSequenceImpedance();
-        } else if (ConnectionType.STAR_DELTA.equals(connectionTypeOfT1) && ConnectionType.DELTA_DELTA.equals(connectionTypeOfT2)) {
-            float temp = powerSystemDeviceMap.get("G1").getZeroSequenceImpedance() + transformerMap.get("T1").getZeroSequenceImpedance();
-            return ((temp * transformerMap.get("T1").getZeroSequenceImpedance()) / (temp + transformerMap.get("T1").getZeroSequenceImpedance()));
-        } else if (ConnectionType.STAR_DELTA.equals(connectionTypeOfT1) && ConnectionType.DELTA_STAR.equals(connectionTypeOfT2)) {
-            float temp = powerSystemDeviceMap.get("G1").getZeroSequenceImpedance() + transformerMap.get("T1").getZeroSequenceImpedance();
-            float temp1 = powerSystemDeviceMap.get("M1").getZeroSequenceImpedance() + transformerMap.get("T2").getZeroSequenceImpedance();
+        float temp, temp1;
+        if (ConnectionType.STAR_DELTA.equals(connectionTypeOfT1)
+                && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)) {
+            return powerSystemDeviceMap.get("G1").getZeroSequenceImpedance()
+                    + transformerMap.get("T1").getZeroSequenceImpedance();
+        } else if (ConnectionType.STAR_DELTA.equals(connectionTypeOfT1)
+                && ConnectionType.DELTA_DELTA.equals(connectionTypeOfT2)) {
+            temp = powerSystemDeviceMap.get("G1").getZeroSequenceImpedance()
+                    + transformerMap.get("T1").getZeroSequenceImpedance();
+            return ((temp * transformerMap.get("T1").getZeroSequenceImpedance())
+                    / (temp + transformerMap.get("T1").getZeroSequenceImpedance()));
+        } else if (ConnectionType.STAR_DELTA.equals(connectionTypeOfT1)
+                && ConnectionType.DELTA_STAR.equals(connectionTypeOfT2)) {
+            temp = powerSystemDeviceMap.get("G1").getZeroSequenceImpedance()
+                    + transformerMap.get("T1").getZeroSequenceImpedance();
+            temp1 = powerSystemDeviceMap.get("M1").getZeroSequenceImpedance()
+                    + transformerMap.get("T2").getZeroSequenceImpedance();
             return ((temp * temp1) / (temp + temp1));
-        } else if (ConnectionType.DELTA_DELTA.equals(connectionTypeOfT1) && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)) {
+        } else if (ConnectionType.DELTA_DELTA.equals(connectionTypeOfT1)
+                && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)) {
             return transformerMap.get("T1").getZeroSequenceImpedance();
-        } else if (ConnectionType.DELTA_DELTA.equals(connectionTypeOfT1) && ConnectionType.DELTA_DELTA.equals(connectionTypeOfT2)) {
-            float temp = transformerMap.get("T1").getZeroSequenceImpedance() * transformerMap.get("T2").getZeroSequenceImpedance();
-            float temp1 = transformerMap.get("T1").getZeroSequenceImpedance() + transformerMap.get("T2").getZeroSequenceImpedance();
+        } else if (ConnectionType.DELTA_DELTA.equals(connectionTypeOfT1)
+                && ConnectionType.DELTA_DELTA.equals(connectionTypeOfT2)) {
+            temp = transformerMap.get("T1").getZeroSequenceImpedance()
+                    * transformerMap.get("T2").getZeroSequenceImpedance();
+            temp1 = transformerMap.get("T1").getZeroSequenceImpedance()
+                    + transformerMap.get("T2").getZeroSequenceImpedance();
             return temp / temp1;
-        } else if (ConnectionType.DELTA_DELTA.equals(connectionTypeOfT1) && ConnectionType.DELTA_STAR.equals(connectionTypeOfT2)) {
-            float temp = transformerMap.get("T1").getZeroSequenceImpedance();
-            float temp1 = powerSystemDeviceMap.get("M1").getZeroSequenceImpedance() + transformerMap.get("T2").getZeroSequenceImpedance();
+        } else if (ConnectionType.DELTA_DELTA.equals(connectionTypeOfT1)
+                && ConnectionType.DELTA_STAR.equals(connectionTypeOfT2)) {
+            temp = transformerMap.get("T1").getZeroSequenceImpedance();
+            temp1 = powerSystemDeviceMap.get("M1").getZeroSequenceImpedance()
+                    + transformerMap.get("T2").getZeroSequenceImpedance();
             return ((temp * temp1) / (temp + temp1));
-        } else if (ConnectionType.DELTA_STAR.equals(connectionTypeOfT1) && ConnectionType.DELTA_DELTA.equals(connectionTypeOfT2)) {
+        } else if ((ConnectionType.DELTA_STAR.equals(connectionTypeOfT1)
+                || (ConnectionType.STAR_STAR.equals(connectionTypeOfT1)))
+                && ConnectionType.DELTA_DELTA.equals(connectionTypeOfT2)) {
             return transformerMap.get("T2").getZeroSequenceImpedance();
-        } else if (ConnectionType.DELTA_STAR.equals(connectionTypeOfT1) && ConnectionType.DELTA_STAR.equals(connectionTypeOfT2)) {
-            return transformerMap.get("T2").getZeroSequenceImpedance() + powerSystemDeviceMap.get("M1").getZeroSequenceImpedance();
-        } else if (ConnectionType.DELTA_STAR.equals(connectionTypeOfT1) && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)) {
+        } else if ((ConnectionType.DELTA_STAR.equals(connectionTypeOfT1)
+                || (ConnectionType.STAR_STAR.equals(connectionTypeOfT1) ) )
+                && ConnectionType.DELTA_STAR.equals(connectionTypeOfT2)) {
+            return transformerMap.get("T2").getZeroSequenceImpedance()
+                    + powerSystemDeviceMap.get("M1").getZeroSequenceImpedance();
+        }else if ((ConnectionType.STAR_STAR.equals(connectionTypeOfT1)
+                && ConnectionType.STAR_STAR.equals(connectionTypeOfT2))){
+            return transformerMap.get("T1").getZeroSequenceImpedance()
+                    +powerSystemDeviceMap.get("G1").getZeroSequenceImpedance()+
+                    transformerMap.get("T2").getZeroSequenceImpedance()
+                    +powerSystemDeviceMap.get("TL").getZeroSequenceImpedance()+
+                    powerSystemDeviceMap.get("M1").getZeroSequenceImpedance();
+        }
+        else if(ConnectionType.STAR_STAR.equals(connectionTypeOfT1)
+                && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)){
+            return powerSystemDeviceMap.get("M1").getZeroSequenceImpedance()
+                    +transformerMap.get("T1").getZeroSequenceImpedance()+
+                    powerSystemDeviceMap.get("TL").getZeroSequenceImpedance()
+                    +transformerMap.get("T2").getZeroSequenceImpedance();
+        }
+        else if (ConnectionType.DELTA_STAR.equals(connectionTypeOfT1)
+                && ConnectionType.STAR_DELTA.equals(connectionTypeOfT2)) {
             if (PositionOfFault.MID_OF_LINE.equals(positionOfFault)) {
-                float temp = transformerMap.get("T1").getZeroSequenceImpedance() + (powerSystemDeviceMap.get("M1").getZeroSequenceImpedance() / 2);
-                float temp1 = (powerSystemDeviceMap.get("M1").getZeroSequenceImpedance() / 2) + transformerMap.get("T2").getZeroSequenceImpedance();
+                temp = transformerMap.get("T1").getZeroSequenceImpedance()
+                        + (powerSystemDeviceMap.get("M1").getZeroSequenceImpedance() / 2);
+                temp1 = (powerSystemDeviceMap.get("M1").getZeroSequenceImpedance() / 2)
+                        + transformerMap.get("T2").getZeroSequenceImpedance();
                 return (temp * temp1 / (temp + temp1));
             } else {
-                return transformerMap.get("T1").getZeroSequenceImpedance() + powerSystemDeviceMap.get("M1").getZeroSequenceImpedance()
+                return transformerMap.get("T1").getZeroSequenceImpedance()
+                        + powerSystemDeviceMap.get("M1").getZeroSequenceImpedance()
                         + transformerMap.get("T2").getZeroSequenceImpedance();
             }
         }
-
-
         return 0;
     }
 
     private float getPositiveEquivalent(PositionOfFault positionOfFault) {
+        Map<String, Transformer> transformerMap = getTransformerMap();
+        Map<String, PowerSystemDevice> powerSystemDeviceMap = getPowerSystemDeviceMap();
         float tempSum = 0;
         if (PositionOfFault.GENERATOR.equals(positionOfFault) || PositionOfFault.MOTOR.equals(positionOfFault)) {
             for (Map.Entry<String, PowerSystemDevice> powerSystemDeviceEntry : powerSystemDeviceMap.entrySet()) {
-                tempSum = +powerSystemDeviceEntry.getValue().getPositiveSequenceImpedance();
+                tempSum += powerSystemDeviceEntry.getValue().getPositiveSequenceImpedance();
             }
             for (Map.Entry<String, Transformer> transformerEntry : transformerMap.entrySet()) {
                 tempSum += transformerEntry.getValue().getPositiveSequenceImpedance();
             }
 
         } else {
-            float temp1 = powerSystemDeviceMap.get("G1").getPositiveSequenceImpedance() +
-                    transformerMap.get("T1").getPositiveSequenceImpedance() + ((powerSystemDeviceMap.get("G1").getPositiveSequenceImpedance()) / 2);
-            float temp2 = ((powerSystemDeviceMap.get("G1").getPositiveSequenceImpedance()) / 2) +
-                    transformerMap.get("T1").getPositiveSequenceImpedance() + powerSystemDeviceMap.get("M1").getPositiveSequenceImpedance();
+            float temp1 = getSum(powerSystemDeviceMap.get("TL").getPositiveSequenceImpedance(),
+                    transformerMap.get("T1").getPositiveSequenceImpedance(),
+                    powerSystemDeviceMap.get("G1").getPositiveSequenceImpedance());
+
+            float temp2 = getSum(powerSystemDeviceMap.get("TL").getPositiveSequenceImpedance(),
+                    transformerMap.get("T2").getPositiveSequenceImpedance(),
+                    powerSystemDeviceMap.get("M1").getPositiveSequenceImpedance());
             tempSum = ((temp1 * temp2) / (temp1 + temp2));
         }
         return tempSum;
     }
 
     private float getNegativeEquivalent(PositionOfFault positionOfFault) {
-        float tempSum = 0;
+        Map<String, Transformer> transformerMap = getTransformerMap();
+        Map<String, PowerSystemDevice> powerSystemDeviceMap = getPowerSystemDeviceMap();
         if (PositionOfFault.GENERATOR.equals(positionOfFault) || PositionOfFault.MOTOR.equals(positionOfFault)) {
+            float tempSum = 0;
             for (Map.Entry<String, PowerSystemDevice> powerSystemDeviceEntry : powerSystemDeviceMap.entrySet()) {
                 tempSum += powerSystemDeviceEntry.getValue().getNegativeSequenceImpedance();
             }
             for (Map.Entry<String, Transformer> transformerEntry : transformerMap.entrySet()) {
                 tempSum += transformerEntry.getValue().getNegativeSequenceImpedance();
             }
-
+            return tempSum;
         } else {
-            float temp1 = powerSystemDeviceMap.get("G1").getNegativeSequenceImpedance() +
-                    transformerMap.get("T1").getNegativeSequenceImpedance() + ((powerSystemDeviceMap.get("G1").getNegativeSequenceImpedance()) / 2);
-            float temp2 = ((powerSystemDeviceMap.get("G1").getNegativeSequenceImpedance()) / 2) +
-                    transformerMap.get("T1").getNegativeSequenceImpedance() + powerSystemDeviceMap.get("M1").getNegativeSequenceImpedance();
-            tempSum = ((temp1 * temp2) / (temp1 + temp2));
+            float temp1 = getSum(powerSystemDeviceMap.get("TL").getNegativeSequenceImpedance(),
+                    transformerMap.get("T1").getNegativeSequenceImpedance(),
+                    powerSystemDeviceMap.get("G1").getNegativeSequenceImpedance());
+            float temp2 = getSum(powerSystemDeviceMap.get("TL").getNegativeSequenceImpedance(),
+                    transformerMap.get("T2").getNegativeSequenceImpedance(),
+                    powerSystemDeviceMap.get("M1").getNegativeSequenceImpedance());
+            return ((temp1 * temp2) / (temp1 + temp2));
         }
-        return tempSum;
     }
 
-
-
+    private float getSum(float transmissionLineImpedance , float transformerNegativeImpedance, float motorNegativeImpedance){
+        return  transformerNegativeImpedance +motorNegativeImpedance+((transmissionLineImpedance) / 2);
+    }
 }

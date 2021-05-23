@@ -14,16 +14,16 @@ public class PowerSystemDeviceRepository {
     private final Map<String, Transformer> transformerMap = new HashMap<>();
 
 
-
-    public Map<String,PowerSystemDevice> getPowerSystemDeviceMap(){
+    public Map<String, PowerSystemDevice> getPowerSystemDeviceMap() {
         return powerSystemDeviceMap;
     }
-    public Map<String,Transformer> getTransformerMap(){
+
+    public Map<String, Transformer> getTransformerMap() {
         return transformerMap;
     }
 
     public PowerSystemDevice getPowerSystemDevice(String powerSystemDeviceName) {
-        if(transformerMap.containsKey(powerSystemDeviceName))
+        if (transformerMap.containsKey(powerSystemDeviceName))
             return transformerMap.get(powerSystemDeviceName);
         return powerSystemDeviceMap.get(powerSystemDeviceName);
     }
@@ -38,14 +38,14 @@ public class PowerSystemDeviceRepository {
         return transformer.getPowerSystemType() + " Added Successfully.";
     }
 
-    public void editTransformerMap(String transformerName,Transformer transformer){
+    public void editTransformerMap(String transformerName, Transformer transformer) {
         transformerMap.remove(transformerName);
-        transformerMap.put(transformerName,transformer);
+        transformerMap.put(transformerName, transformer);
     }
 
-    public void editPowerSystemMap(String powerSystemName,PowerSystemDevice powerSystemDevice){
+    public void editPowerSystemMap(String powerSystemName, PowerSystemDevice powerSystemDevice) {
         powerSystemDeviceMap.remove(powerSystemName);
-        powerSystemDeviceMap.put(powerSystemName,powerSystemDevice);
+        powerSystemDeviceMap.put(powerSystemName, powerSystemDevice);
     }
 
 

@@ -32,7 +32,8 @@ public class Parameter {
                                 @RequestParam(value = "powerSystemType") PowerSystemType powerSystemType,
                                 @RequestParam("phaseAngle") float phaseAngle, @RequestParam("isBASE") boolean isBase) {
 
-        PowerSystemDevice powerSystemDevice = new PowerSystemDevice(mvaRating, kvRating, zeroSequenceImpedance, positiveSequenceImpedance,
+        PowerSystemDevice powerSystemDevice = new PowerSystemDevice(mvaRating, kvRating, zeroSequenceImpedance
+                , positiveSequenceImpedance,
                 negativeSequenceImpedance, phaseAngle, isBase, powerSystemType);
 
         return powerSystemDeviceService.addPowerSystemDevice(powerSystemName, powerSystemDevice);
@@ -41,7 +42,8 @@ public class Parameter {
 
     @PostMapping("/addTransformer")
     String addTransformer(@RequestParam("transformerName") String transformerName,
-                          @RequestParam("PrimaryKVRating") float PrimaryKVRating, @RequestParam("SecondaryKVRating") float SecondaryKVRating,
+                          @RequestParam("PrimaryKVRating") float PrimaryKVRating,
+                          @RequestParam("SecondaryKVRating") float SecondaryKVRating,
                           @RequestParam("mvaRating") float mvaRating,
                           @RequestParam("zeroSequenceImpedanceInPerUnit") float zeroSequenceImpedance,
                           @RequestParam("positiveSequenceImpedanceInPerUnit") float positiveSequenceImpedance,
@@ -50,7 +52,8 @@ public class Parameter {
                           @RequestParam(value = "connectionType", defaultValue = "null") ConnectionType connectionType) {
 
         Transformer transformer = new Transformer(mvaRating, PrimaryKVRating, SecondaryKVRating, zeroSequenceImpedance
-                , positiveSequenceImpedance, negativeSequenceImpedance, phaseAngle, false, PowerSystemType.TRANSFORMER, connectionType);
+                , positiveSequenceImpedance, negativeSequenceImpedance, phaseAngle, false,
+                PowerSystemType.TRANSFORMER, connectionType);
         return powerSystemDeviceService.addTransformer(transformerName, transformer);
     }
 
@@ -63,10 +66,18 @@ public class Parameter {
 
 
     @GetMapping("/getFaultParameter")
-    String getFaultParameters(@RequestParam("typeOfFault") FaultType faultType, @RequestParam("positionOfFault") PositionOfFault positionOfFault,
+    String getFaultParameters(@RequestParam("typeOfFault") FaultType faultType,
+                              @RequestParam("positionOfFault") PositionOfFault positionOfFault,
                               @RequestParam("faultImpedence") float faultImpedance)
-    {return "Fault Current for the given data is " + faultService.getFaultParameters(positionOfFault, faultType, faultImpedance) + " per unit.";
+
+
+    {    double faultCurrent= faultService.getFaultParameters(positionOfFault, faultType, faultImpedance);
+        double actualCurrent=faultService.getFinalCurrent(faultCurrent);
+        return "Fault Current for the given data is : " + faultCurrent+ " per unit /n" +
+            " Actual Current is : "+ actualCurrent+" amp";
     }
+
+
 
     @GetMapping("getDevice")
     public PowerSystemDevice getPower(String name) {
