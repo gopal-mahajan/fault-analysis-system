@@ -15,8 +15,15 @@ public class Transformer extends PowerSystemDevice{
                        float positiveSequenceImpedance, float negativeSequenceImpedance,float phaseAngle,
                        boolean isBase, PowerSystemType powerSystemType, ConnectionType connectionType) {
 
-        super(mvaRating,primaryKVRating, zeroSequenceImpedance, positiveSequenceImpedance,
-                negativeSequenceImpedance, phaseAngle, isBase, powerSystemType);
+    super(
+        mvaRating,
+        primaryKVRating,
+        zeroSequenceImpedance,
+        positiveSequenceImpedance,
+        negativeSequenceImpedance,
+        phaseAngle,
+        isBase,
+        powerSystemType);
         this.secondaryKVRating = secondaryKVRating;
         this.connectionType = connectionType;
         this.newSecondaryKVRating=secondaryKVRating;

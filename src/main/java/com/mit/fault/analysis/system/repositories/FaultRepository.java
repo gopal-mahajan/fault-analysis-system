@@ -1,12 +1,12 @@
-//package com.mit.fault.analysis.system.repositories;
+// package com.mit.fault.analysis.system.repositories;
 //
-//import com.mit.fault.analysis.system.entities.PowerSystemDevice;
-//import com.mit.fault.analysis.system.entities.Transformer;
-//import org.springframework.beans.factory.annotation.Autowired;
+// import com.mit.fault.analysis.system.entities.PowerSystemDevice;
+// import com.mit.fault.analysis.system.entities.Transformer;
+// import org.springframework.beans.factory.annotation.Autowired;
 //
-//import java.util.Map;
+// import java.util.Map;
 //
-//public class FaultRepository {
+// public class FaultRepository {
 ////    @Autowired
 ////    PowerSystemDeviceRepository powerSystemDeviceRepository;
 //
@@ -27,4 +27,4 @@
 //    }
 //
 //
-//}
+// }
