@@ -38,7 +38,7 @@ button{
 	width:780px;
     margin:0 auto;
     background: #FFF;
-    /*background-image:url("bgimg.png");*/
+    background-image:url("bgimg.png");
     box-shadow: 0px 9px 13px 5px;
 }
 .containerRight{
@@ -116,7 +116,7 @@ footer {
     margin: 0 auto;
     box-shadow: 0px 9px 13px 5px;
     border-radius: 5px;
-    /*background-image:url("bgimg.png");*/
+    background-image:url("bgimg.png");
 }
 #form input {
 
@@ -130,29 +130,8 @@ footer {
     background: rgb(59, 118, 135);
     text-align: center;
 }
-/**********-FORM INPUT-********/
 #problem-image img{
 	width: 70%;
     float: left;
     margin-bottom: 20px;
 }
-/*a:link {
-  color: black;
-  background-color: transparent;
-  text-decoration: none;
-}
-a:visited {
-  color: blue;
-  background-color: transparent;
-  text-decoration: none;
-}
-a:hover {
-  color: red;
-  background-color: transparent;
-  text-decoration: underline;
-}
-a:active {
-  color: transparent;
-  background-color: transparent;
-  text-decoration: underline;
-}*/

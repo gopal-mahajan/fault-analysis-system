@@ -56,41 +56,41 @@
           Add Generator Details
           <p>
             <label for="name">MVA Rating</label>
-            <input type="text" name="MVA" placeholder="Enter MVA Rating" required>
+            <input type="text" name="MVA" placeholder="Enter MVA Rating" required="true">
           </p>
           <p>
             <label for="name">KV Rating</label>
-            <input type="text" name="KVA" placeholder="Enter KVA Rating" required>
+            <input type="text" name="KVA" placeholder="Enter KVA Rating" required="true">
           </p>
           <p>
             <label for="name">Positive Sequence Impedance</label>
-            <input type="text" name="Positive" placeholder="Positive Sequence Impedance" required>
+            <input type="text" name="Positive" placeholder="Positive Sequence Impedance" required="true">
           </p>
           <p>
             <label for="name">Negative Sequence Impedance</label>
-            <input type="text" name="Negative" placeholder="Negative Sequence Impedance" required>
+            <input type="text" name="Negative" placeholder="Negative Sequence Impedance" required="true">
           </p>
           <p>
             <label for="name">Zero Sequence Impedance</label>
-            <input type="text" name="Zero" placeholder="Zero Sequence Impedance" required>
+            <input type="text" name="Zero" placeholder="Zero Sequence Impedance" required="true">
           </p>
           <p>
             <label for="name">Base Value</label>
-            <select name="Base" id="component" required>
+            <select name="Base" id="component" required="true">
               <option value="" disabled selected hidden>Is this base element</option>
               <option value="true">Yes</option>
               <option value="false">No</option>
             </select>
           </p>
           <p>
-            <input type="submit" name="submit" value="Submit" id="submitForm">
+            <input type="submit" name="submit" value="Submit"  id="submitForm">
           </p>
           <!--<p>
             <input type="button" name="reset" onclick="resetValues();printComponents()" value="Add Another Compnent" id="submit">
           </p>-->
         </form>
         <p>
-          <input type="button" name="reset" onclick="valGenDetails();resetValues();" value="Add Another Component"
+          <input type="button" name="reset" onclick="valGenDetails();resetValues();document.location='landingPage.html'" value="Add Another Component"
                  id="submit">
         </p>
         <div id="ok"></div>

@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF8">
 		<title>Transmission Line</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="js/scripts.js"></script>
 		<link rel="stylesheet" href="css/firstDraft.css">
 		<style>
@@ -49,17 +50,16 @@
 						<br><br><br><br><br><br><br><br><br><br>
 						<div id="form">
 
-							<form method="post" action="" id="inputForm" onsubmit="valTlDetails()">
-								Add Transmission Line Details
+							<form method="post" action="" id="faultParaForm" >
+                Get Fault Parameters
 								<p>
 									<label for="name">Position of Fault</label>
-										<select name="faulPosition" id="fltPos">
+										<select name="faultPosition" id="fltPos">
 												<option value="" disabled selected hidden>Fault at</option>
 												<option value="GENERATOR">Generator</option>
-												<option value="MID_OF_LINE">Transmission Line</option>
+												<option value="MID_OF_LINE">Mid-of-TransmissionLine</option>
 												<option value="MOTOR">Motor</option>
-
-												</select>
+                    </select>
 								</p>
 								<p>
 									<label for="name">Fault Impedance </label>
@@ -70,18 +70,17 @@
 									<label for="name">Type of Fault</label>
 									<select name="faultType" id="FltType" required>
 									<option value="" disabled selected hidden>Fault Type</option>
-									<option value="slg">Single Line</option>
-									<option value="ll">Line-Line</option>
-									<option value="llg">Line-Line-Ground</option>
-									<option value="3ph">3 Phase</option>
-								</select>
+									<option value="LINE_TO_GROUND">Single Line</option>
+									<option value="LINE_TO_LINE">Line-Line</option>
+									<option value="LINE_TO_LINE_GROUND">Line-Line-Ground</option>
+                  </select>
 								</p>
 								<p>
 									<input type="submit" name="submit" value="Submit" id="submit">
 								</p>
-								<!--<p>
-									<input type="button" name="reset" onclick="resetValues();printComponents()" value="Add Another Compnent" id="submit">
-								</p>-->
+								<p>
+									<input type="button" name="changeBase" onclick="changeBase()" value="Change Base" id="submitForm">
+								</p>
 							</form>
 							<div id="ok"></div>
 							<div id="msg"></div>
