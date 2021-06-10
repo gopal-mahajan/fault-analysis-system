@@ -14,19 +14,17 @@ public class PowerSystemDevice {
   float zeroSequenceImpedance;
   float positiveSequenceImpedance;
   float negativeSequenceImpedance;
-  float phaseAngle = 0;
   boolean isBase;
   PowerSystemType powerSystemType;
 
   public PowerSystemDevice(
-      float mvaRating,
-      float kvRating,
-      float zeroSequenceImpedance,
-      float positiveSequenceImpedance,
-      float negativeSequenceImpedance,
-      float phaseAngle,
-      boolean isBase,
-      PowerSystemType powerSystemType) {
+    float mvaRating,
+    float kvRating,
+    float zeroSequenceImpedance,
+    float positiveSequenceImpedance,
+    float negativeSequenceImpedance,
+    boolean isBase,
+    PowerSystemType powerSystemType) {
     this.isBase = isBase;
     this.kvRating = kvRating;
     this.powerSystemType = powerSystemType;
@@ -34,7 +32,6 @@ public class PowerSystemDevice {
     this.zeroSequenceImpedance = zeroSequenceImpedance;
     this.positiveSequenceImpedance = positiveSequenceImpedance;
     this.negativeSequenceImpedance = negativeSequenceImpedance;
-    this.phaseAngle = phaseAngle;
     this.newKVRating = kvRating;
   }
 

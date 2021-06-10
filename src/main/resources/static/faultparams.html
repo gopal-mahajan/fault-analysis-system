@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF8">
+		<title>Transmission Line</title>
+		<script type="text/javascript" src="js/scripts.js"></script>
+		<link rel="stylesheet" href="css/firstDraft.css">
+		<style>
+    	div{
+        	box-sizing: border-box;
+    	}
+    	</style>
+	</head>
+	<body id="main-page">
+		<div class="row">
+			<!--<div class="column">-->
+				<div class="container">
+					<header class="header">
+
+						<a class="link-title" href="/">Fault Analysis Software</a>!!!
+
+					</header>
+					<nav class="menu">
+
+						<a href="landingPage.html">Add Components</a>&nbsp;&nbsp;&nbsp;
+						<a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
+						<a href="">Blank2</a>!!!
+
+					</nav>
+					<aside>
+						<h1>Units of Input</h1><br><br>
+						<ol>
+							<li>Power Rating: Mega Volt Ampere(MVA)</li>
+							<li>Voltage Rating: Kilo Volt(KV)</li>
+						</ol>
+						<!---<img src="D:\downloads\img1.png">-->
+
+					</aside>
+					<article class="main">
+
+						<h1 class="page-heading">Input Details</h1>
+
+						<div id=problem-image>
+
+							<img src="img1.png" alt="Problem Image">
+
+						</div>
+						<br>
+						<br><br><br><br><br><br><br><br><br><br>
+						<div id="form">
+
+							<form method="post" action="" id="inputForm" onsubmit="valTlDetails()">
+								Add Transmission Line Details
+								<p>
+									<label for="name">Position of Fault</label>
+										<select name="faulPosition" id="fltPos">
+												<option value="" disabled selected hidden>Fault at</option>
+												<option value="GENERATOR">Generator</option>
+												<option value="MID_OF_LINE">Transmission Line</option>
+												<option value="MOTOR">Motor</option>
+
+												</select>
+								</p>
+								<p>
+									<label for="name">Fault Impedance </label>
+									<input type="text" name="FaultImpedance" placeholder="Fault Impedance" required>
+								</p>
+
+								<p>
+									<label for="name">Type of Fault</label>
+									<select name="faultType" id="FltType" required>
+									<option value="" disabled selected hidden>Fault Type</option>
+									<option value="slg">Single Line</option>
+									<option value="ll">Line-Line</option>
+									<option value="llg">Line-Line-Ground</option>
+									<option value="3ph">3 Phase</option>
+								</select>
+								</p>
+								<p>
+									<input type="submit" name="submit" value="Submit" id="submit">
+								</p>
+								<!--<p>
+									<input type="button" name="reset" onclick="resetValues();printComponents()" value="Add Another Compnent" id="submit">
+								</p>-->
+							</form>
+							<div id="ok"></div>
+							<div id="msg"></div>
+							<div id="msg1"></div>
+						</div>
+					</article>
+					<br>
+					<footer>
+						MIT,Manipal, Final Semester Project, May 2021, Software for Fault Analysis
+						<span class="separator">|</span>
+						&copy;Design by Pratik Patil and Gopal Mahajan
+					</footer>
+				</div>
+			</div>
+
+			<!--<div class="column">
+				<div class=container>
+
+					<header class="header">
+
+						<a class="link-title" href="/">Fault Analysis Software</a>!!!
+
+					</header>
+					<nav class="menu">
+
+						<a href="">Blank</a>!!!&nbsp;&nbsp;&nbsp;
+						<a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp
+						<a href="">Blank2</a>!!!
+
+					</nav>
+
+					<article class="main">
+						<script>
+
+							function printComponents(){
+								var component=form.elements[0].value;
+								var mva=form.elements[1].value;
+								var kva=form.elements[2].value;
+								var psi=form.elements[3].value;
+								var nsi=form.elements[4].value;
+								var zsi=form.elements[5].value;
+							document.getElementById("opForm").innerHTML=mva;
+}
+						</script>
+						<div id="opForm"></div>
+					</article>
+
+				</div>
+			</div>-->
+		</div>
+	</body>
+</html>
