@@ -135,3 +135,31 @@ footer {
     float: left;
     margin-bottom: 20px;
 }
+output{
+    margin: 0px;
+    
+    font-size: 20px;
+    font-family: "Arial Narrow", "Myriad Pro";
+    font-weight: normal;
+    
+}
+a:link {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: blue;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+a:active {
+  color: transparent;
+  background-color: transparent;
+  text-decoration: underline;
+}
