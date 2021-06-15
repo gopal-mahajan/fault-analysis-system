@@ -1,141 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF8">
-		<title>Transmission Line</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script type="text/javascript" src="js/scripts.js"></script>
-		<link rel="stylesheet" href="css/firstDraft.css">
-		<style>
+<head>
+  <meta charset="UTF8">
+  <title>Transmission Line</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/scripts.js"></script>
+  <link rel="stylesheet" href="css/firstDraft.css">
+  <style>
     	div{
         	box-sizing: border-box;
     	}body{background-image:url("bgimg.png");}
     	</style>
-	</head>
-	<body id="main-page">
-		<div class="row">
-			<!--<div class="column">-->
-				<div class="container">
-					<header class="header">
+</head>
+<body id="main-page">
+<div class="row">
+  <!--<div class="column">-->
+  <div class="container">
+    <header class="header">
 
-						<a class="link-title" href="/">Fault Analysis Software</a>!!!
+      <a class="link-title" href="/">Fault Analysis Software</a>!!!
 
-					</header>
-					<nav class="menu">
+    </header>
+    <nav class="menu">
 
-						<a href="landingPage.html">Add Components</a>&nbsp;&nbsp;&nbsp;
-						<a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
-						<a href="">Blank2</a>!!!
+      <a href="landingPage.html">Add Components</a>&nbsp;&nbsp;&nbsp;
+      <a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
+      <a href="">Blank2</a>!!!
 
-					</nav>
-					<aside>
-						<h1>Units of Input</h1><br><br>
-						<ol>
-							<li>Power Rating: Mega Volt Ampere(MVA)</li>
-							<li>Voltage Rating: Kilo Volt(KV)</li>
-						</ol>
-						<!---<img src="D:\downloads\img1.png">-->
+    </nav>
+    <aside>
+      <h1>Units of Input</h1><br><br>
+      <ol>
+        <li>Power Rating: Mega Volt Ampere(MVA)</li>
+        <li>Voltage Rating: Kilo Volt(KV)</li>
+      </ol>
+      <!---<img src="D:\downloads\img1.png">-->
 
-					</aside>
-					<article class="main">
+    </aside>
+    <article class="main">
 
-						<h1 class="page-heading">Input Details</h1>
+      <h1 class="page-heading">Input Details</h1>
 
-						<div id=problem-image>
+      <div id=problem-image>
 
-							<img src="img1.png" alt="Problem Image">
+        <img src="img1.png" alt="Problem Image">
 
-						</div>
-						<br>
-						<br><br><br><br><br><br><br><br><br><br>
-						<div id="form">
+      </div>
+      <br>
+      <br><br><br><br><br><br><br><br><br><br>
+      <div id="form">
 
-							<form method="post" action="" id="faultParaForm" >
-                Get Fault Parameters
-								<p>
-									<label for="name">Position of Fault</label>
-										<select name="faultPosition" id="fltPos">
-												<option value="" disabled selected hidden>Fault at</option>
-												<option value="GENERATOR">Generator</option>
-												<option value="MID_OF_LINE">Mid-of-TransmissionLine</option>
-												<option value="MOTOR">Motor</option>
-                    </select>
-								</p>
-								<p>
-									<label for="name">Fault Impedance </label>
-									<input type="text" name="FaultImpedance" placeholder="Fault Impedance" required>
-								</p>
+        <form method="get" action="" id="faultParaForm" >
+          Get Fault Parameters
+          <p>
+            <label for="name">Position of Fault</label>
+            <select name="faultPosition" id="fltPos">
+              <option value="" disabled selected hidden>Fault at</option>
+              <option value="GENERATOR">Generator</option>
+              <option value="MID_OF_LINE">Mid-of-TransmissionLine</option>
+                  <option value="MOTOR">Motor</option>
+            </select>
+          </p>
+          <p>
+            <label for="name">Fault Impedance </label>
+            <input type="text" name="FaultImpedance" placeholder="Fault Impedance" required>
+          </p>
 
-								<p>
-									<label for="name">Type of Fault</label>
-									<select name="faultType" id="FltType" required>
-									<option value="" disabled selected hidden>Fault Type</option>
-									<option value="LINE_TO_GROUND">Single Line</option>
-									<option value="LINE_TO_LINE">Line-Line</option>
-									<option value="LINE_TO_LINE_GROUND">Line-Line-Ground</option>
-                  </select>
-								</p>
-								<p>
-									<input type="submit" name="submit" value="Submit" id="submit">
-								</p>
-								<p>
-									<input type="button" name="changeBase" onclick="changeBase()" value="Change Base" id="submitForm">
-								</p>
-								<h1>Fault current:</h1><output name="faultCurrent" id="faultCurrent"></output>A<br><br>
-								<h1>Current:</h1><output name="faultCurrent" id="Current"></output>
-							</form>
-							<script>
-								document.getElementById("faultCurrent").innerHTML=220;
-								document.getElementById("Current").innerHTML=120;
-							</script>
-							<div id="ok"></div>
-							<div id="msg"></div>
-							<div id="msg1"></div>
-						</div>
-					</article>
-					<br>
-					<footer>
-						MIT,Manipal, Final Semester Project, May 2021, Software for Fault Analysis
-						<span class="separator">|</span>
-						&copy;Design by Pratik Patil and Gopal Mahajan
-					</footer>
-				</div>
-			</div>
+          <p>
+            <label for="name">Type of Fault</label>
+            <select name="faultType" id="FltType" required>
+              <option value="" disabled selected hidden>Fault Type</option>
+              <option value="LINE_TO_GROUND">Single Line</option>
+              <option value="LINE_TO_LINE">Line-Line</option>
+              <option value="LINE_TO_LINE_GROUND">Line-Line-Ground</option>
+            </select>
+          </p>
+          <p>
+            <input type="submit" name="submit" value="Submit" id="submit">
+          </p>
+          <p>
+            <input type="button" name="changeBase" onclick="changeBase()" value="Change Base" id="submitForm">
+          </p>
+          <h1>Fault current:</h1><output name="faultCurrent" id="faultCurrent"></output>A<br><br>
+          <h1>Current:</h1><output name="faultCurrent" id="Current"></output>
+        </form>
+        <script>
+						document.getElementById("faultCurrent").innerHTML=220;
+						document.getElementById("Current").innerHTML=120;
+				</script>
+        <div id="ok"></div>
+        <div id="msg"></div>
+        <div id="msg1"></div>
+      </div>
+    </article>
+    <br>
+    <footer>
+      MIT,Manipal, Final Semester Project, May 2021, Software for Fault Analysis
+      <span class="separator">|</span>
+      &copy;Design by Pratik Patil and Gopal Mahajan
+    </footer>
+  </div>
+</div>
 
-			<!--<div class="column">
-				<div class=container>
-
-					<header class="header">
-
-						<a class="link-title" href="/">Fault Analysis Software</a>!!!
-
-					</header>
-					<nav class="menu">
-
-						<a href="">Blank</a>!!!&nbsp;&nbsp;&nbsp;
-						<a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp
-						<a href="">Blank2</a>!!!
-
-					</nav>
-
-					<article class="main">
-						<script>
-
-							function printComponents(){
-								var component=form.elements[0].value;
-								var mva=form.elements[1].value;
-								var kva=form.elements[2].value;
-								var psi=form.elements[3].value;
-								var nsi=form.elements[4].value;
-								var zsi=form.elements[5].value;
-							document.getElementById("opForm").innerHTML=mva;
+<!--<div class="column">
+  <div class=container>
+    <header class="header">
+      <a class="link-title" href="/">Fault Analysis Software</a>!!!
+    </header>
+    <nav class="menu">
+      <a href="">Blank</a>!!!&nbsp;&nbsp;&nbsp;
+      <a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp
+      <a href="">Blank2</a>!!!
+    </nav>
+    <article class="main">
+      <script>
+        function printComponents(){
+          var component=form.elements[0].value;
+          var mva=form.elements[1].value;
+          var kva=form.elements[2].value;
+          var psi=form.elements[3].value;
+          var nsi=form.elements[4].value;
+          var zsi=form.elements[5].value;
+        document.getElementById("opForm").innerHTML=mva;
 }
-						</script>
-						<div id="opForm"></div>
-					</article>
-
-				</div>
-			</div>-->
-		</div>
-	</body>
+      </script>
+      <div id="opForm"></div>
+    </article>
+  </div>
+</div>-->
+</div>
+</body>
 </html>

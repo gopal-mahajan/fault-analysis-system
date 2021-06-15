@@ -1,153 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF8">
-		<title>Transformer</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script type="text/javascript" src="js/scripts.js"></script>
-		<link rel="stylesheet" href="css/firstDraft.css">
-		<style>
+<head>
+  <meta charset="UTF8">
+  <title>Transformer</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/scripts.js"></script>
+  <link rel="stylesheet" href="css/firstDraft.css">
+  <style>
     	div{
         	box-sizing: border-box;
     	}body{background-image:url("bgimg.png");}
     	</style>
-	</head>
-	<body id="main-page">
-		<div class="row">
-			<!--<div class="column">-->
-				<div class="container">
-					<header class="header">
+</head>
+<body id="main-page">
+<div class="row">
+  <!--<div class="column">-->
+  <div class="container">
+    <header class="header">
 
-						<a class="link-title" href="/">Fault Analysis Software</a>!!!
+      <a class="link-title" href="/">Fault Analysis Software</a>!!!
 
-					</header>
-					<nav class="menu">
+    </header>
+    <nav class="menu">
 
-						<a href="landingPage.html">Add Components</a>&nbsp;&nbsp;&nbsp;
-						<a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
-						<a href="">Blank2</a>!!!
+      <a href="landingPage.html">Add Components</a>&nbsp;&nbsp;&nbsp;
+      <a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
+      <a href="">Blank2</a>!!!
 
-					</nav>
-					<aside>
-						<h1>Units of Input</h1><br><br>
-						<ol>
-							<li>Power Rating: Mega Volt Ampere(MVA)</li>
-							<li>Voltage Rating: Kilo Volt(KV)</li>
-						</ol>
-						<!---<img src="D:\downloads\img1.png">-->
+    </nav>
+    <aside>
+      <h1>Units of Input</h1><br><br>
+      <ol>
+        <li>Power Rating: Mega Volt Ampere(MVA)</li>
+        <li>Voltage Rating: Kilo Volt(KV)</li>
+      </ol>
+      <!---<img src="D:\downloads\img1.png">-->
 
-					</aside>
-					<article class="main">
+    </aside>
+    <article class="main">
 
-						<h1 class="page-heading">Input Details</h1>
+      <h1 class="page-heading">Input Details</h1>
 
-						<div id=problem-image>
+      <div id=problem-image>
 
-							<img src="img1.png" alt="Problem Image">
+        <img src="img1.png" alt="Problem Image">
 
-						</div>
-						<br>
-						<br><br><br><br><br><br><br><br><br><br>
-						<div id="form">
+      </div>
+      <br>
+      <br><br><br><br><br><br><br><br><br><br>
+      <div id="form">
 
-							<form method="post" id="transformerInputForm" >
-								Add Transformer Details<br>
-                <p>
-                  <label for="name">Transformer Name</label>
-                  <input type="text" name="Transformer Name" placeholder="Enter Transformer Name" required>
-                </p>
-								<label>Transaformer Type</label>
-												<select name="trfTypeSelect" id="trfType">
-												<option value="" disabled selected hidden>Transformer Combination</option>
-												<option value="STAR_STAR">Star_Star</option>
-                        <option value="STAR_DELTA">Star_Delta</option>
-												<option value="DELTA_STAR">Delta_Star</option>
-												<option value="DELTA_DELTA">Delta_Delta</option>
-												</select>
+        <form method="post" id="transformerInputForm" >
+          Add Transformer Details<br>
+          <p>
+            <label for="name">Transformer Name</label>
+            <input type="text" name="Transformer Name" placeholder="Enter Transformer Name" required>
+          </p>
+          <label>Transaformer Type</label>
+          <select name="trfTypeSelect" id="trfType">
+            <option value="" disabled selected hidden>Transformer Combination</option>
+            <option value="STAR_STAR">Star_Star</option>
+            <option value="STAR_DELTA">Star_Delta</option>
+            <option value="DELTA_STAR">Delta_Star</option>
+            <option value="DELTA_DELTA">Delta_Delta</option>
+          </select>
 
-                <p>
-									<label for="name">MVA Rating</label>
-									<input type="text" name="MVA" placeholder="Enter MVA Rating" required="true">
-								</p>
-								<p>
-									<label for="name">Primary KV Rating</label>
-									<input type="text" name="KVA" placeholder="Enter Primary KVA Rating" required="true">
-								</p>
-								<p>
-									<label for="name">Secondary KV Rating</label>
-									<input type="text" name="KVA" placeholder="Enter Secondary KVA Rating" required="true">
-								</p>
-								<p>
-									<label for="name">Positive Sequence Impdence</label>
-									<input type="text" name="Positive" placeholder="Positive Sequence Impdence" required="true">
-								</p>
-								<p>
-									<label for="name">Negetive Sequence Impdence</label>
-									<input type="text" name="Negetive" placeholder="Negetive Sequence Impdence" required="true">
-								</p>
-								<p>
-									<label for="name">Zero Sequence Impdence</label>
-									<input type="text" name="Zero" placeholder="Zero Sequence Impdence" required="true">
-								</p>
-								<p>
-									<input type="submit" name="submit" value="Submit" id="submitForm">
-								</p>
-							 <!--<p>
-									<input type="button" name="reset" onclick="resetValues();printComponents()" value="Add Another Compnent" id="submit">
-								</p>-->
-							</form>
-							<p>
-                <input type="button" name="reset" onclick="valTrfDetails();document.location='landingPage.html'" value="Add Another Component"
-                       id="submit">
-							</p>
-              <div id="ok"></div>
-							<div id="msg"></div>
-							<div id="msg1"></div>
-						</div>
-					</article>
-					<br>
-					<footer>
-						MIT,Manipal, Final Semester Project, May 2021, Software for Fault Analysis
-						<span class="separator">|</span>
-						&copy;Design by Pratik Patil and Gopal Mahajan
-					</footer>
-				</div>
-			</div>
+          <p>
+            <label for="name">MVA Rating</label>
+            <input type="text" name="MVA" placeholder="Enter MVA Rating" required="true">
+          </p>
+          <p>
+            <label for="name">Primary KV Rating</label>
+            <input type="text" name="KVA" placeholder="Enter Primary KVA Rating" required="true">
+          </p>
+          <p>
+            <label for="name">Secondary KV Rating</label>
+            <input type="text" name="KVA" placeholder="Enter Secondary KVA Rating" required="true">
+          </p>
+          <p>
+            <label for="name">Positive Sequence Impdence</label>
+            <input type="text" name="Positive" placeholder="Positive Sequence Impdence" required="true">
+          </p>
+          <p>
+            <label for="name">Negetive Sequence Impdence</label>
+            <input type="text" name="Negetive" placeholder="Negetive Sequence Impdence" required="true">
+          </p>
+          <p>
+            <label for="name">Zero Sequence Impdence</label>
+            <input type="text" name="Zero" placeholder="Zero Sequence Impdence" required="true">
+          </p>
+          <p>
+            <input type="submit" name="submit" value="Submit" id="submitForm">
+          </p>
+          <!--<p>
+             <input type="button" name="reset" onclick="resetValues();printComponents()" value="Add Another Compnent" id="submit">
+           </p>-->
+        </form>
+        <p>
+          <input type="button" name="reset" onclick="valTrfDetails();document.location='landingPage.html'" value="Add Another Component"
+                 id="submit">
+        </p>
+        <div id="ok"></div>
+        <div id="msg"></div>
+        <div id="msg1"></div>
+      </div>
+    </article>
+    <br>
+    <footer>
+      MIT,Manipal, Final Semester Project, May 2021, Software for Fault Analysis
+      <span class="separator">|</span>
+      &copy;Design by Pratik Patil and Gopal Mahajan
+    </footer>
+  </div>
+</div>
 
-			<!--<div class="column">
-				<div class=container>
-
-					<header class="header">
-
-						<a class="link-title" href="/">Fault Analysis Software</a>!!!
-
-					</header>
-					<nav class="menu">
-
-						<a href="">Blank</a>!!!&nbsp;&nbsp;&nbsp;
-						<a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
-						<a href="">Blank2</a>!!!
-
-					</nav>
-
-					<article class="main">
-						<script>
-
-							function printComponents(){
-								var component=form.elements[0].value;
-								var mva=form.elements[1].value;
-								var kva=form.elements[2].value;
-								var psi=form.elements[3].value;
-								var nsi=form.elements[4].value;
-								var zsi=form.elements[5].value;
-							document.getElementById("opForm").innerHTML=mva;
+<!--<div class="column">
+  <div class=container>
+    <header class="header">
+      <a class="link-title" href="/">Fault Analysis Software</a>!!!
+    </header>
+    <nav class="menu">
+      <a href="">Blank</a>!!!&nbsp;&nbsp;&nbsp;
+      <a href="">Blank1</a>!!!&nbsp;&nbsp;&nbsp;
+      <a href="">Blank2</a>!!!
+    </nav>
+    <article class="main">
+      <script>
+        function printComponents(){
+          var component=form.elements[0].value;
+          var mva=form.elements[1].value;
+          var kva=form.elements[2].value;
+          var psi=form.elements[3].value;
+          var nsi=form.elements[4].value;
+          var zsi=form.elements[5].value;
+        document.getElementById("opForm").innerHTML=mva;
 }
-						</script>
-						<div id="opForm"></div>
-					</article>
-
-				</div>
-			</div>-->
-		</div>
-	</body>
+      </script>
+      <div id="opForm"></div>
+    </article>
+  </div>
+</div>-->
+</div>
+</body>
 </html>

@@ -123,29 +123,28 @@ $(document).ready(function(){
                  });
 
                  $("#faultParaForm").submit(function(event){
-
-                                     var position=form.elements[0].value;
-                                     var fi=form.elements[1].value;
-                                     var type=form.elements[2].value;
-                                     console.log(position,fi,type);
-                                     event.preventDefault();
-                                     var path= "/getFaultParameter?faultImpedance="+fi+
-                                     "&positionOfFault="+position+"&typeOfFault="+type;
-                                     console.log(path);
-                                      $.ajax({
-                                                 method: 'POST',
-                                                 url: path,
-                                                 data : $('#faultParaForm').serialize(),
-                                                 success: function(data){
-                                                     console.log(data);
-                                                     alert(data);
-                                                 },
-                                                 error: function(xhr, desc, err){
-                                                     console.log(err);
-                                                 }
-                                    });
+                           console.log(form.elements[0].value,form.elements[1].value,form.elements[2].value);
+                           var position=form.elements[0].value;
+                                var fi=form.elements[1].value;
+                                var type=form.elements[2].value;
+                                console.log(position,fi,type);
+                                event.preventDefault();
+                                var path= "/getFaultParameter?faultImpedance="+fi+
+                                "&positionOfFault="+position+"&typeOfFault="+type;
+                                console.log(path);
+                                $.ajax({
+                                        url: path,
+                                        type: 'GET',
+                                        data : $('#faultParaForm').serialize(),
+                                        success: function(data){
+                                           console.log("Success");
+                                           alert("Success");
+                                        },
+                                        error: function(xhr, desc, err){
+                                           console.log(err);
+                                        }
+                                });
                  });
-
             });
         });
 
