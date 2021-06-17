@@ -139,13 +139,17 @@ $(document).ready(function(){
                                         data : $('#faultParaForm').serialize(),
                                         success: function(data){
                                            console.log("Success");
-                                           alert("Success");
+                                           alert(data);
                                         },
                                         error: function(xhr, desc, err){
                                            console.log(err);
                                         }
                                 });
+
+
+
                  });
+
             });
         });
 
@@ -227,5 +231,26 @@ function printComponents(){
 
 }
 function changeBase(){
-  var path="";
-}
+//  var path="";
+//    $("#changeBaseForm").submit(function(event){
+//                  form=document.getElementById("changeBaseForm");
+//                  event.preventDefault();
+//                  var path="/changeBase";
+
+//                  $.ajax({
+//                          url: "/changeBase",
+//                          type: 'GET',
+////                          data : $('#changeBaseForm').serialize(),
+//                          success: function(){
+//                             console.log("Success");
+//                             alert("Success");
+//                          },
+//                          error: function(xhr, desc, err){
+//                             console.log(err);
+//                          }
+//                  });
+                  }
+
+
+
+

@@ -21,7 +21,7 @@ public class Parameter {
   @Autowired FaultService faultService;
 
   @PostMapping("/addPowerSystem")
-  public ResponseEntity<CustomResponse<PowerSystemDevice>> addPowerSystemDevice(
+  public ResponseEntity<String> addPowerSystemDevice(
       @RequestParam("powerSystemName") String powerSystemName,
       @RequestParam("kvRating") float kvRating,
       @RequestParam("mvaRating") float mvaRating,
@@ -42,11 +42,11 @@ public class Parameter {
             powerSystemType);
 
     String res = powerSystemDeviceService.addPowerSystemDevice(powerSystemName, powerSystemDevice);
-    return new ResponseEntity<>(new CustomResponse<>(powerSystemDevice, "Added**"), HttpStatus.OK);
+    return new ResponseEntity<>(res, HttpStatus.OK);
   }
 
   @PostMapping("/addTransformer")
-  public ResponseEntity<CustomResponse<String>> addTransformer(
+  public ResponseEntity<String> addTransformer(
       @RequestParam("transformerName") String transformerName,
       @RequestParam("PrimaryKVRating") float PrimaryKVRating,
       @RequestParam("SecondaryKVRating") float SecondaryKVRating,
@@ -69,12 +69,11 @@ public class Parameter {
             PowerSystemType.TRANSFORMER,
             connectionType);
     String res = powerSystemDeviceService.addTransformer(transformerName, transformer);
-    return new ResponseEntity<>(
-      new CustomResponse<>(res, ""), HttpStatus.OK);
+    return new ResponseEntity<>(res, HttpStatus.OK);
   }
 
   @PostMapping("/addTransmissionLine")
-  public ResponseEntity<CustomResponse<String>> addTransmissionLine(
+  public ResponseEntity<String> addTransmissionLine(
       @RequestParam("zeroSequenceImpedanceInPerUnit") float zeroSequenceImpedance,
       @RequestParam("positiveSequenceImpedanceInPerUnit") float positiveSequenceImpedance,
       @RequestParam("negativeSequenceImpedanceInPerUnit") float negativeSequenceImpedance,
@@ -83,31 +82,30 @@ public class Parameter {
         new TransmissionLine(
             zeroSequenceImpedance, positiveSequenceImpedance, negativeSequenceImpedance);
     String res = powerSystemDeviceService.addTransmissionLine(name, transmissionLine);
-    return new ResponseEntity<>(new CustomResponse<>(res, ""), HttpStatus.OK);
-  }
-
-  @GetMapping("/changeBase")
-  public void checkBase() throws BaseAlreadyChanged {
-    powerSystemDeviceService.checkBase();
-    return;
+    return new ResponseEntity<>(res, HttpStatus.OK);
   }
 
   @GetMapping("/getFaultParameter")
-  ResponseEntity<CustomResponse<String>> getFaultParameters(
+  ResponseEntity<String> getFaultParameters(
       @RequestParam("typeOfFault") FaultType faultType,
       @RequestParam("positionOfFault") PositionOfFault positionOfFault,
-      @RequestParam("faultImpedance") float faultImpedance) throws BaseAlreadyChanged {
-//    powerSystemDeviceService.checkBase();
+      @RequestParam("faultImpedance") float faultImpedance)
+      throws BaseAlreadyChanged {
+
+    powerSystemDeviceService.checkBase();
+    //    System.out.println("Base  Changed ");
+
     double faultCurrent =
         faultService.getFaultParameters(positionOfFault, faultType, faultImpedance);
     double actualCurrent = faultService.getFinalCurrent(faultCurrent);
-    String res= "Fault Current for the given data is : "
-        + faultCurrent
-        + " per unit /n"
-        + " Actual Current is : "
-        + actualCurrent
-        + " amp";
-    return new ResponseEntity<>(new CustomResponse<>(res," "),HttpStatus.OK);
+    String res =
+        "Fault Current for the given data is : "
+            + faultCurrent
+            + " per unit /n"
+            + " Actual Current is : "
+            + actualCurrent
+            + " amp";
+    return new ResponseEntity<>(res, HttpStatus.OK);
   }
 
   @GetMapping("getDevice")
