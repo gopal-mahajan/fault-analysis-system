@@ -226,3 +226,6 @@ function printComponents(){
         console.log(formArray);
 
 }
+function changeBase(){
+  var path="";
+}
