@@ -123,6 +123,7 @@ $(document).ready(function(){
                  });
 
                  $("#faultParaForm").submit(function(event){
+                          form=document.getElementById("faultParaForm");
                            console.log(form.elements[0].value,form.elements[1].value,form.elements[2].value);
                            var position=form.elements[0].value;
                                 var fi=form.elements[1].value;
