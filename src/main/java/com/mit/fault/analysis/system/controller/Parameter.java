@@ -85,15 +85,17 @@ public class Parameter {
     return new ResponseEntity<>(res, HttpStatus.OK);
   }
 
+  @GetMapping("/changeBase")
+  public void checkBase() throws BaseAlreadyChanged {
+    powerSystemDeviceService.checkBase();
+    return;
+  }
+
   @GetMapping("/getFaultParameter")
   ResponseEntity<String> getFaultParameters(
       @RequestParam("typeOfFault") FaultType faultType,
       @RequestParam("positionOfFault") PositionOfFault positionOfFault,
-      @RequestParam("faultImpedance") float faultImpedance)
-      throws BaseAlreadyChanged {
-
-    powerSystemDeviceService.checkBase();
-    //    System.out.println("Base  Changed ");
+      @RequestParam("faultImpedance") float faultImpedance) {
 
     double faultCurrent =
         faultService.getFaultParameters(positionOfFault, faultType, faultImpedance);
